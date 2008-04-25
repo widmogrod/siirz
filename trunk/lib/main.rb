@@ -2,7 +2,7 @@
 require 'libglade2'
 require 'main_callbacks'
 
-
+Nowa zmiana
 class Main
   # akcesor - tylko do odczytu
   attr :glade
