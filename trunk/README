@@ -1,3 +1,20 @@
 == SIiRZ
 
-You should document your project here.
+System Identyfikacji i Rejestracji Zwierząt
+
+
+
+WYMAGANIA
+---------
+
+- system operacyjny: Linux z zainstalowanym środowiskiem graficznym GNOME
+
+biblioteki:
+- ruby 1.8      (@link: http://www.ruby-lang.org/pl/)
+- glade         - RAD dla budowania interfejsu w gnome
+                (@link: http://glade.gnome.org/)
+- ruby-gnome2   - GUI
+                  (@link: http://ruby-gnome2.sourceforge.jp/)
+
+- sqlite-ruby   - przechowywanie danych programu
+                  @link: http://sqlite-ruby.rubyforge.org/
