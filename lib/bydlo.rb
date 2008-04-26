@@ -2,7 +2,7 @@ module Bydlo
 
   module Zwierze
     attr :nazwa
-    def getNazwa
+    def dajNazwa
         return @nazwa
     end
   end
@@ -49,10 +49,22 @@ module Bydlo
       @zwierzeta = []
     end
 
+    def ileJest()
+      return @zwierzeta.length
+    end
+    
+    def dajWszystkie()
+      return @zwierzeta
+    end
+    
+    def daj(index)
+      return @zwierzeta.fetch(index, nil)
+    end
+    
     def dodaj(zwierze)
       # czy instancja odpowiedniej klasy
       if !zwierze.kind_of? Bydlo::Zwierze
-        #puts 'Przekazany obiekt nie jest typu `Zwierze`'
+        puts 'Przekazany obiekt nie jest typu `Zwierze`'
         return false;
       end
 
