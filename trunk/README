@@ -16,5 +16,8 @@ biblioteki:
 - ruby-gnome2   - GUI
                   (@link: http://ruby-gnome2.sourceforge.jp/)
 
+- libdbd-sqlite3-ruby1.8
+- libdbi1.8
+- libsqlite3-ruby1.8
 - sqlite-ruby   - przechowywanie danych programu
                   @link: http://sqlite-ruby.rubyforge.org/
