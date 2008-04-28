@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 require 'libglade2'
 require 'bydlo'
-require 'main_callbacks'
 
 
 class Main
@@ -10,18 +9,27 @@ class Main
 
   def initialize()
     # inicjowanie tylko okna glownego
+
+    # {|handler| method(handler)} <-- przekazuje wywolywanie akcji
+    # zdefiniowanych w `glade` dla obiektu `mainWindow` w tej klasie
     @glade = GladeXML.new("./glade/main.glade", 'mainWindow', "SIiRZ", nil, GladeXML::FILE) {|handler| method(handler)}
-    #@dodajUbojWindow = @glade.get_widget("dodajUbojWindow").hide
-    #@dodajGospodarstowWindow = @glade.get_widget("dodajGospodarstwoWindow").hide
-    #@aboutDialog = @glade.get_widget("aboutDialog")
-    
-    #init_callbacks(@glade)
   end
 
+   # Uchwyty akcji - wszystkie definiowane w glade
+  
   def on_about_activate()
     @aboutDialog.show
   end
+  
+  def on_gospodarstwa1_activate
+  end
+  def on_zakoncz1_activate  
+  end
+  def on_partie1_activate
+  end
+  # proste akcje po kliknieciu buttona `lista Gospodarstw`
   def on_listaGospodarstw_clicked()
+    # (String, String) <-- okresla typy kolumn
     @model = Gtk::ListStore.new(String, String)
     #@model.set_value(@model.append, "File", 'value');
     
@@ -31,10 +39,12 @@ class Main
         {:file => 'puk'},
     ];
 
+    # wypelnianie modelu
     tablica.each_index do |index|
       @model.insert(index).set_value(0,tablica[index][:file])
     end
     
+    # tworzenie kolumny
     column = Gtk::TreeViewColumn.new("File",Gtk::CellRendererText.new,{ :text => 0, :background => 1 })
 
     # nic innego jak Gtk::TreeView
@@ -42,12 +52,13 @@ class Main
     @listview.set_model(@model)
     @listview.append_column(column)
   end
+
   def on_zapisz_listaGospodarstw_clicked()
 	text = @glade.get_widget("nazwaUbojni").text
         @model.insert(1).set_value(0,text)
   end
   def on_dodajGospodarstwo_clicked()
-    @dodajGospodarstowWindow.show
+
   end
   
   def on_uboje1_activate()
@@ -60,6 +71,7 @@ class Main
   end
 end
 
+# TODO Rozpoczecie budowy pseldo adaptera ..
 class Window
   attr_reader :main
   def initialize(mainWindow)
@@ -76,10 +88,11 @@ end
 class UbojWindow < Window 
   attr_reader :uboj
   def init
- 
+    # pobranie z xml okna `dodajUbojWindow` <- tak nazwalem to okno w glade
     @uboj = GladeXML.new("./glade/main.glade", "dodajUbojWindow", "SIiRZ - dodaj ubój", nil, GladeXML::FILE) {|handler| method(handler)}
     
     # Utworzenie listy bydla - bedzie z tad przeniesione!
+    # ADD: Te dane beda pobierane z bazy danych
     listaBydlo = Bydlo::Lista.new
     listaBydlo.dodaj(Bydlo::Buhaj.new)
     listaBydlo.dodaj(Bydlo::Ciele.new)
@@ -89,12 +102,15 @@ class UbojWindow < Window
 
     # Uzupelnienie modelu
     @model = Gtk::ListStore.new(String)
+    # dla kazdego elementu z listy
     listaBydlo.dajWszystkie.each do |element|
+      # dodaj do modelu 0 - oznacza kolumne, 2 arg. jest to nazwa zwierzecia
       @model.append.set_value(0, element.dajNazwa())
     end
     
-    # Lista ComboBox
+    # Lista ComboBox - rowniez nazwa ustalona w glade
     comboBoxEntry = @uboj.get_widget('kategoriaBydla');
+    # ustawienie modelu w glade
     comboBoxEntry.model = @model
   end
   
