@@ -72,6 +72,23 @@ module Db
       end
     end
 
+    # @return bool
+    def usun(id)
+      begin        
+        sql = "DELETE FROM #{@tabela} WHERE #{@id} = #{id} "
+        stmt = @@connection.prepare(sql)
+        stmt.execute
+        return true
+      rescue Exception => e
+        puts e.message
+        return false
+      end
+    end
+
+    def ostatioDodaneId
+      return @@connection.last_insert_row_id
+    end
+    
     # @return Hash
     def wczytaj(id)
       begin        
@@ -131,44 +148,3 @@ module Db
     end
   end
 end
-
-class Uboj < Db::Record
-  @id = 'id'
-  @tabela = 'uboj'
-  @kolumny = []
-end
-
-class KategoriaBydla < Db::Record
-  def init
-    @id = 'id_kategorii'
-    @tabela = 'kategoria_bydla'
-    @kolumny = ['id_kategorii','nazwa']
-  end
-end
-
-class Rasa < Db::Record
-  @id = 'id'
-  @tabela = 'rasa'
-  @kolumny = []
-end
-
-class PrzedzialWiekowy < Db::Record
-  @id = 'id'
-  @tabela = 'przedzial_wiekowy'
-  @kolumny = []
-end
-
-class Zwierze < Db::Record
-  def init
-    @id = 'id'
-    @tabela = 'zwierze'
-    @kolumny = ['nazwa','nazwa_2']
-  end
-end
-
-require 'sqlite3'
-
-polaczenie = SQLite3::Database.new("database.sqlite")
-Db::Record.polaczenie(polaczenie);
-
-
