@@ -1,3 +1,5 @@
+require 'sqlite3'
+
 module Db
   class Record
     @@connection = 1
@@ -6,7 +8,7 @@ module Db
     # polaczenie bedzie dostepne we wszystkich instancjach tej klasy
     def self.polaczenie(connection)
       if !connection.is_a?(SQLite3::Database)
-        fail('Połączenie nie jest instancja `SQLite3::Database`');
+        raise Exception.new('Połączenie nie jest instancja `SQLite3::Database`');
       end
 
       @@connection = connection
@@ -14,7 +16,7 @@ module Db
 
     def initialize
       if @@connection == nil
-         fail('Nie ustawiono polaczenia z baza danych');
+         raise Exception.new('Nie ustawiono polaczenia z baza danych');
       end
 
       # metoda inicjujaca zmienne, ktore sa nizej sprawdzane
@@ -169,7 +171,4 @@ require 'sqlite3'
 polaczenie = SQLite3::Database.new("database.sqlite")
 Db::Record.polaczenie(polaczenie);
 
-zwierze = KategoriaBydla.new
-#zwierze.dodaj({'nazwa' => 'Krowa'})
-#puts zwierze.wczytaj(1000)
-#puts zwierze.wczytajWszystkie
+
