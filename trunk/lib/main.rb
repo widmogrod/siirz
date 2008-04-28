@@ -6,7 +6,7 @@ require 'main_callbacks'
 
 class Main
   # akcesor - tylko do odczytu
-  attr :glade, :bydloList
+  attr_reader :glade, :bydloList
 
   def initialize()
     # inicjowanie tylko okna glownego
@@ -51,7 +51,7 @@ class Main
   end
   
   def on_uboje1_activate()
-    UbojWindow.new
+    UbojWindow.new(self)
   end
   
   def on_zamknij_clicked()
@@ -60,9 +60,23 @@ class Main
   end
 end
 
-class UbojWindow
-  attr :uboj
-  def initialize()
+class Window
+  attr_reader :main
+  def initialize(mainWindow)
+    @@main = mainWindow;
+
+    init()
+  end
+  
+  def on_zapiszToolButton_clicked()
+    puts 'kliknieto zapisz'
+  end
+end
+
+class UbojWindow < Window 
+  attr_reader :uboj
+  def init
+ 
     @uboj = GladeXML.new("./glade/main.glade", "dodajUbojWindow", "SIiRZ - dodaj ubój", nil, GladeXML::FILE) {|handler| method(handler)}
     
     # Utworzenie listy bydla - bedzie z tad przeniesione!
@@ -82,6 +96,15 @@ class UbojWindow
     # Lista ComboBox
     comboBoxEntry = @uboj.get_widget('kategoriaBydla');
     comboBoxEntry.model = @model
+  end
+  
+  # Uchwyty akcji
+  
+  def on_zapiszToolButton_clicked()
+    puts 'kliknieto zapisz'
+    comboBoxEntry = @uboj.get_widget('kategoriaBydla');
+    puts comboBoxEntry.active_text
+    #puts comboBoxEntry.model.get_value('1',0)
   end
 end
 
