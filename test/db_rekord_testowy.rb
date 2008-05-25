@@ -16,7 +16,7 @@ class RekordTestowy < Db::Record
   end
 end
 
-class TestDbRekordTestowy < Test::Unit::TestCase
+class TestDbRekordsiTestowy < Test::Unit::TestCase
   def setup
     @polaczenie = SQLite3::Database.new("database.sqlite")
   end
