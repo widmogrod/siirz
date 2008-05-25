@@ -1,21 +1,41 @@
 #!/usr/bin/env ruby
 require 'libglade2'
 require 'bydlo'
-
+require 'singleton'
+require 'action'
+require 'actions/main'
+require 'actions/osoba'
 
 class Main
   # akcesor - tylko do odczytu
   attr_reader :glade, :bydloList
+  
+  @akcje = Hash.new
 
   def initialize()
     # inicjowanie tylko okna glownego
 
     # {|handler| method(handler)} <-- przekazuje wywolywanie akcji
     # zdefiniowanych w `glade` dla obiektu `mainWindow` w tej klasie
-    @glade = GladeXML.new("./glade/main.glade", 'mainWindow', "SIiRZ", nil, GladeXML::FILE) {|handler| method(handler)}
+    #@glade = GladeXML.new("./views/glade/main.glade", nil, "SIiRZ", nil, GladeXML::FILE) {|handler| method(handler)}
+    
+    #@akcje << {
+    #  'main' => Action::Main.new(@glade.get_widget('main_window')),
+    #  'osoba' => Action::Osoba.new(@glade.get_widget('osoby_window'))
+    #}
+    @mainAction = Actions::Main.instance
+    @mainAction.pokaz
   end
 
+  def wywolaj_obsluge_akcji(akcja)
+   
+  end
+  
    # Uchwyty akcji - wszystkie definiowane w glade
+  
+  def on_button_osoby_clicked()
+    put 'on_button_osoby_clicked'
+  end
   
   def on_about_activate()
     @aboutDialog.show
