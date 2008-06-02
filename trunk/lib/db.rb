@@ -147,4 +147,15 @@ module Db
       end
     end
   end
+  
+  
+  class Osoba < Db::Record
+    def init
+      @id = 'id_osoby'
+      @tabela = 'kategoria_bydla'
+      @kolumny = ['id_osoby', 'Imie', 'Nazwisko', 'Adres', 'NIP', 'PESEL', 'Seria i numer dowodu', 'Wazne']
+    end
+  end
+
 end
+  
