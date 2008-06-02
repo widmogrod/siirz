@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 require 'libglade2'
-require 'db'
+#require 'sqlite3'
+#require 'db'
 
 class Main
-
   # akcesor - tylko do odczytu
   attr_reader :glade
  
@@ -12,8 +12,8 @@ class Main
     @glade = GladeXML.new("./views/glade/main.glade", nil, "SIiRZ", nil, GladeXML::FILE) {|handler| method(handler)}
     
     # Nawiazanie polaczenia z BD
-    polaczenie = SQLite3::Database.new("database.sqlite")
-    Db::Record.polaczenie(polaczenie);
+    #polaczenie = SQLite3::Database.new("database.sqlite")
+    #Db::Record.polaczenie(polaczenie);
 
     # Okna..
     @main_window = @glade.get_widget('main_window');
@@ -47,6 +47,7 @@ class Main
   end
   # akcje panelu glownego
   def on_button_osoby_clicked()
+    puts 'osoby'
     @osoby_window.show
   end
   def on_button_historia_clicked
@@ -145,8 +146,17 @@ class Main
   #
   # Osoby
   #
-
-  # akcje panelu nawigacyjnego
+  
+  # akcje dla okna list
+  # panelu nawigacyjnego
+  def on_button_osoba_dodaj_clicked
+    
+  end
+  def on_button_osoba_edytuj_clicked
+    
+  end
+  # akcje dla okna add/edit
+  # panelu nawigacyjnego
   def on_button_osoby_dodaj_clicked()
     # tworzenie komunikatu
     dialog = Gtk::MessageDialog.new(nil, 
