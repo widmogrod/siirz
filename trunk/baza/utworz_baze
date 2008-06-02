@@ -1,0 +1,14 @@
+#!/bin/bash
+
+echo "tworze plik z baza => to.baza"
+touch to.baza
+
+echo "tworze tabele w bazie"
+sqlite3 to.baza < tworzenie_bazy.sql
+
+echo "tworze skrypt uzupelniajacy baze"
+./to.py > dane.sql
+
+echo "tworze tabele w bazie"
+sqlite3 to.baza < dane.sql
+
