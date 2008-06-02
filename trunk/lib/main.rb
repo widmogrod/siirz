@@ -7,140 +7,128 @@ require 'actions/main'
 require 'actions/osoba'
 
 class Main
+
   # akcesor - tylko do odczytu
-  attr_reader :glade, :bydloList
-  
-  @akcje = Hash.new
-
+  attr_reader :glade
+ 
   def initialize()
-    # inicjowanie tylko okna glownego
-
-    # {|handler| method(handler)} <-- przekazuje wywolywanie akcji
-    # zdefiniowanych w `glade` dla obiektu `mainWindow` w tej klasie
-    #@glade = GladeXML.new("./views/glade/main.glade", nil, "SIiRZ", nil, GladeXML::FILE) {|handler| method(handler)}
+    @glade = GladeXML.new("./views/glade/main.glade", nil, "SIiRZ", nil, GladeXML::FILE) {|handler| method(handler)}
     
-    #@akcje << {
-    #  'main' => Action::Main.new(@glade.get_widget('main_window')),
-    #  'osoba' => Action::Osoba.new(@glade.get_widget('osoby_window'))
-    #}
-    @mainAction = Actions::Main.instance
-    @mainAction.pokaz
+    @main_window = @glade.get_widget('main_window');
+    @osoby_window = @glade.get_widget('osoby_window');
+    @uboj_window = @glade.get_widget('uboj_window');
+    @gospodarstwo_window  = @glade.get_widget('gospodarstwo_window');
+    
+    @about_dialog  = @glade.get_widget('about_dialog');
+    
+    @main_window.show
   end
 
-  def wywolaj_obsluge_akcji(akcja)
-   
-  end
-  
-   # Uchwyty akcji - wszystkie definiowane w glade
-  
+  #
+  # Main
+  #
+
+  # akcje panelu glownego
   def on_button_osoby_clicked()
-    put 'on_button_osoby_clicked'
+      @osoby_window.show
+  end
+  # akcje dla menu
+  def on_menuitem_uboj_activate
+    @uboj_window.show
+  end
+  def on_menuitem_gospodarstwo_activate
+    @gospodarstwo_window.show
+  end
+  def on_menuitem_about_activate
+    @about_dialog.show
+    @about_dialog.signal_connect('response') { @about_dialog.hide }
+  end
+
+  #
+  # Uboj
+  #
+  
+  # akcje panelu nawigacyjnego
+  def on_button_uboj_dodaj_clicked
+    # tworzenie komunikatu
+    dialog = Gtk::MessageDialog.new(nil, 
+                              Gtk::Dialog::NO_SEPARATOR,
+                              Gtk::MessageDialog::INFO,
+                              Gtk::MessageDialog::BUTTONS_OK,
+                              "Uboj został dodany")
+    dialog.run
+    dialog.signal_connect('response') { dialog.hide }
+  end
+  def on_button_uboj_zapisz_clicked
+    # tworzenie komunikatu
+    dialog = Gtk::MessageDialog.new(nil, 
+                              Gtk::Dialog::NO_SEPARATOR,
+                              Gtk::MessageDialog::INFO,
+                              Gtk::MessageDialog::BUTTONS_OK,
+                              "Zmiany zostały zapisane")
+    dialog.run
+    dialog.signal_connect('response') { dialog.hide }
+  end
+  def on_button_uboj_anuluj_clicked
+    @uboj_window.hide
   end
   
-  def on_about_activate()
-    @aboutDialog.show
+  #
+  # Gospodarstwo
+  #
+  
+  # akcje panelu nawigacyjnego
+  def on_button_gospodarstwo_dodaj_clicked
+    # tworzenie komunikatu
+    dialog = Gtk::MessageDialog.new(nil, 
+                              Gtk::Dialog::NO_SEPARATOR,
+                              Gtk::MessageDialog::INFO,
+                              Gtk::MessageDialog::BUTTONS_OK,
+                              "Gospodarstwo zostało dodane")
+    dialog.run
+    dialog.signal_connect('response') { dialog.hide }
+  end
+  def on_button_gospodarstwo_zapisz_clicked
+    # tworzenie komunikatu
+    dialog = Gtk::MessageDialog.new(nil, 
+                              Gtk::Dialog::NO_SEPARATOR,
+                              Gtk::MessageDialog::INFO,
+                              Gtk::MessageDialog::BUTTONS_OK,
+                              "Zmiany zostały zapisane")
+    dialog.run
+    dialog.signal_connect('response') { dialog.hide }
+  end
+  def on_button_gospodarstwo_anuluj_clicked
+    @gospodarstwo_window.hide
   end
   
-  def on_gospodarstwa1_activate
-  end
-  def on_zakoncz1_activate  
-  end
-  def on_partie1_activate
-  end
-  # proste akcje po kliknieciu buttona `lista Gospodarstw`
-  def on_listaGospodarstw_clicked()
-    # (String, String) <-- okresla typy kolumn
-    @model = Gtk::ListStore.new(String, String)
-    #@model.set_value(@model.append, "File", 'value');
-    
-    tablica = [
-        {:file => 'ok'},
-        {:file => 'tuk'},
-        {:file => 'puk'},
-    ];
+  #
+  # Osoby
+  #
 
-    # wypelnianie modelu
-    tablica.each_index do |index|
-      @model.insert(index).set_value(0,tablica[index][:file])
-    end
-    
-    # tworzenie kolumny
-    column = Gtk::TreeViewColumn.new("File",Gtk::CellRendererText.new,{ :text => 0, :background => 1 })
-
-    # nic innego jak Gtk::TreeView
-    @listview = @glade.get_widget("treeview_listaGospodarstw");
-    @listview.set_model(@model)
-    @listview.append_column(column)
+  # akcje panelu nawigacyjnego
+  def on_button_osoby_dodaj_clicked()
+    # tworzenie komunikatu
+    dialog = Gtk::MessageDialog.new(nil, 
+                              Gtk::Dialog::NO_SEPARATOR,
+                              Gtk::MessageDialog::INFO,
+                              Gtk::MessageDialog::BUTTONS_OK,
+                              "Osoba została dodana")
+    dialog.run
+    dialog.signal_connect('response') { dialog.hide }
   end
-
-  def on_zapisz_listaGospodarstw_clicked()
-	text = @glade.get_widget("nazwaUbojni").text
-        @model.insert(1).set_value(0,text)
+  def on_button_osoby_zapisz_clicked()
+    # tworzenie komunikatu
+    dialog = Gtk::MessageDialog.new(nil, 
+                              Gtk::Dialog::NO_SEPARATOR,
+                              Gtk::MessageDialog::INFO,
+                              Gtk::MessageDialog::BUTTONS_OK,
+                              "Zmiany zostały zapisane")
+    dialog.run
+    dialog.signal_connect('response') { dialog.hide }
   end
-  def on_dodajGospodarstwo_clicked()
-
-  end
-  
-  def on_uboje1_activate()
-    UbojWindow.new(self)
-  end
-  
-  def on_zamknij_clicked()
-    puts 'kliknieto zamknij'
-    Gtk.main_quit
-  end
-end
-
-# TODO Rozpoczecie budowy pseldo adaptera ..
-class Window
-  attr_reader :main
-  def initialize(mainWindow)
-    @@main = mainWindow;
-
-    init()
-  end
-  
-  def on_zapiszToolButton_clicked()
-    puts 'kliknieto zapisz'
-  end
-end
-
-class UbojWindow < Window 
-  attr_reader :uboj
-  def init
-    # pobranie z xml okna `dodajUbojWindow` <- tak nazwalem to okno w glade
-    @uboj = GladeXML.new("./glade/main.glade", "dodajUbojWindow", "SIiRZ - dodaj ubój", nil, GladeXML::FILE) {|handler| method(handler)}
-    
-    # Utworzenie listy bydla - bedzie z tad przeniesione!
-    # ADD: Te dane beda pobierane z bazy danych
-    listaBydlo = Bydlo::Lista.new
-    listaBydlo.dodaj(Bydlo::Buhaj.new)
-    listaBydlo.dodaj(Bydlo::Ciele.new)
-    listaBydlo.dodaj(Bydlo::Jalowka.new)
-    listaBydlo.dodaj(Bydlo::Krowa.new)
-    listaBydlo.dodaj(Bydlo::Wolec.new)
-
-    # Uzupelnienie modelu
-    @model = Gtk::ListStore.new(String)
-    # dla kazdego elementu z listy
-    listaBydlo.dajWszystkie.each do |element|
-      # dodaj do modelu 0 - oznacza kolumne, 2 arg. jest to nazwa zwierzecia
-      @model.append.set_value(0, element.dajNazwa())
-    end
-    
-    # Lista ComboBox - rowniez nazwa ustalona w glade
-    comboBoxEntry = @uboj.get_widget('kategoriaBydla');
-    # ustawienie modelu w glade
-    comboBoxEntry.model = @model
-  end
-  
-  # Uchwyty akcji
-  
-  def on_zapiszToolButton_clicked()
-    puts 'kliknieto zapisz'
-    comboBoxEntry = @uboj.get_widget('kategoriaBydla');
-    puts comboBoxEntry.active_text
-    #puts comboBoxEntry.model.get_value('1',0)
+  def on_button_osoby_anuluj_clicked()
+    @osoby_window.hide
   end
 end
 
