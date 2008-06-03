@@ -6,6 +6,7 @@ require 'db'
 class Main
   # akcesor - tylko do odczytu
   attr_reader :glade
+  attr_accessor :osobay_list_selected
  
   def initialize()
     # Glowy obiekt widoku, z niego wyszczegulawane sa pozostale okna
@@ -166,16 +167,34 @@ class Main
     osoba = Db::Osoba.new
     tablica = osoba.wczytajWszystkie();
 
-    model = Gtk::ListStore.new(String, String)
+    model = Gtk::ListStore.new(String, String, String)
     tablica.each_index do |index|
-      model.insert(index).set_value(0,tablica[index]['Imie'])
-      model.insert(index).set_value(1,tablica[index]['Nazwisko'])
+      puts index
+      iter = model.insert(index)
+      iter.set_value(0,tablica[index]['id_osoby'])
+      iter.set_value(1,tablica[index]['Imie'])
+      iter.set_value(2,tablica[index]['Nazwisko'])
+      puts index
     end
 
     @treeview_osoby.set_model(model)
+    
+#    row-activated: self, path, column
+#
+#        * self: the Gtk::TreeView
+#        * path: the Gtk::TreePath
+#        * column: the Gtk::TreeViewColumn
+    # uchwyt dla kliknietego wiersza
+    @treeview_osoby.signal_connect("row-activated") do |view, path, column|
+       # ustawienie id rekordu ktory zostal klikniety
+       # dzieki temu przycisk edytuj umozliwi nam edycje okreslonego rekordu
+       @osobay_list_selected = model.get_value(model.get_iter(path),0)
+    end
+
     # tworzenie kolumny
-    @treeview_osoby.insert_column(0, "Imie", Gtk::CellRendererText.new, { :text => 1, :background => 0 })
-    @treeview_osoby.insert_column(1, "Nazwisko", Gtk::CellRendererText.new, { :text => 1, :background => 0 })
+    @treeview_osoby.insert_column(0, "Id", Gtk::CellRendererText.new,{:text => 1})
+    @treeview_osoby.insert_column(1, "Imie", Gtk::CellRendererText.new,{:text => 1})
+    @treeview_osoby.insert_column(2, "Nazwisko", Gtk::CellRendererText.new,{:text => 1})
   end
   def on_button_osoby_dodaj_clicked()
     # tworzenie komunikatu
