@@ -55,6 +55,12 @@ class Main
     puts 'osoby'
     @osoby_window.show
   end
+  def on_button_faktura_clicked
+    
+  end
+  def on_button_plik_clicked
+    
+  end
   def on_button_historia_clicked()
     
   end
