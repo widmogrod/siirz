@@ -154,7 +154,7 @@ module Db
   class Osoba < Db::Record
     def init
       @id = 'id_osoby'
-      @tabela = 'osoba'
+      @tabela = 'Osoba'
       @kolumny = ['id_osoby', 'Imie', 'Nazwisko', 'Adres', 'NIP', 'PESEL', 'Seria', 'Wazne']
     end
   end
