@@ -164,18 +164,18 @@ class Main
   def on_button_osoby_list_clicked
     @osoby_list_window.show
     osoba = Db::Osoba.new
-    tablica = osoba.wczytajWszystkie;
-    
+    tablica = osoba.wczytajWszystkie();
+
     model = Gtk::ListStore.new(String, String)
     tablica.each_index do |index|
-      model.insert(index).set_value(0,tablica[index][:file])
+      model.insert(index).set_value(0,tablica[index]['Imie'])
+      model.insert(index).set_value(1,tablica[index]['Nazwisko'])
     end
 
-    # tworzenie kolumny
-    column = Gtk::TreeViewColumn.new("File",Gtk::CellRendererText.new,{ :text => 0, :background => 1 })
-    
     @treeview_osoby.set_model(model)
-    @treeview_osoby.append_column(column)
+    # tworzenie kolumny
+    @treeview_osoby.insert_column(0, "Imie", Gtk::CellRendererText.new, { :text => 0, :background => 1 })
+    @treeview_osoby.insert_column(1, "Nazwisko", Gtk::CellRendererText.new, { :text => 0, :background => 1 })
   end
   def on_button_osoby_dodaj_clicked()
     # tworzenie komunikatu
