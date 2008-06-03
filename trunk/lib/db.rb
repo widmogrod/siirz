@@ -39,7 +39,7 @@ module Db
       begin
         sprawdzDane(dane)
 
-        sql = "INSERT INTO #{@tabela} (#{dane.keys.join(', ')}) VALUES('#{dane.values.join("', '")}')"
+        puts sql = "INSERT INTO `#{@tabela}` (`#{dane.keys.join('`, `')}`) VALUES('#{dane.values.join("', '")}')"
 
         stmt = @@connection.prepare(sql)
         stmt.execute
@@ -58,10 +58,10 @@ module Db
         # formatowanie danych do formatu `kolumna` => 'wartosc'
         set = []
         dane.each_pair do |key, value|
-          set.push("#{key} = '#{value}'")
+          set.push("`#{key}` = '#{value}'")
         end
         
-        sql = "UPDATE #{@tabela} SET #{set.join(', ')} WHERE #{@id} = #{id} "
+        puts sql = "UPDATE `#{@tabela}` SET #{set.join(', ')} WHERE `#{@id}` = '#{id}' "
 
         stmt = @@connection.prepare(sql)
         stmt.execute
@@ -75,7 +75,7 @@ module Db
     # @return bool
     def usun(id)
       begin        
-        sql = "DELETE FROM #{@tabela} WHERE #{@id} = #{id} "
+        sql = "DELETE FROM `#{@tabela}` WHERE `#{@id}` = '#{id}' "
         stmt = @@connection.prepare(sql)
         stmt.execute
         return true
@@ -92,7 +92,7 @@ module Db
     # @return Hash
     def wczytaj(id)
       begin        
-        sql = "SELECT * FROM #{@tabela} WHERE #{@id} = #{id} LIMIT 1"
+        sql = "SELECT * FROM `#{@tabela}` WHERE `#{@id}` = '#{id}' LIMIT 1"
 
         stmt = @@connection.prepare(sql)
         stmt.execute do |results|
@@ -114,7 +114,7 @@ module Db
     # @return array of Hash
     def wczytajWszystkie
       begin        
-        sql = "SELECT * FROM #{@tabela}"
+        sql = "SELECT * FROM `#{@tabela}`"
 
         # tworzenie Hash tj. {'klucz' => 'wartosc'} ..
         stmt = @@connection.prepare(sql)
@@ -173,7 +173,7 @@ module Db
 	  def init
 		@id = 'id_kategorii'
 		@tabela = 'kategoria_bydla'
-		@kolumny = ['Nazwa', 'Wazne' ]
+		@kolumny = ['id_kategorii','Nazwa', 'Wazne' ]
 	  end
   end
 
@@ -222,7 +222,7 @@ module Db
 	  def init
 		@id = 'id_przedzialu'
 		@tabela = 'przedzial_wiekowy'
-		@kolumny = [   'Opis', 'Wazne']
+		@kolumny = [ 'id_przedzialu', 'Opis', 'Wazne']
 	  end
   end
 
