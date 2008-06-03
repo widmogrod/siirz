@@ -6,7 +6,7 @@ require 'db'
 class Main
   # akcesor - tylko do odczytu
   attr_reader :glade
-  attr_accessor :osobay_list_selected
+  attr_accessor :osobay_list_selected_id
  
   def initialize()
     # Glowy obiekt widoku, z niego wyszczegulawane sa pozostale okna
@@ -155,10 +155,34 @@ class Main
   # akcje dla okna list
   # panelu nawigacyjnego
   def on_button_osoba_dodaj_clicked()
-    
+    @osoby_window.show
   end
   def on_button_osoba_edytuj_clicked()
-    
+    if @osobay_list_selected_id != nil
+      # ukryj okno z lista uzytkownikow - tylko zawadza
+      @osoby_list_window.hide
+
+      # pobieranie danych o uzytkowniu
+      osoba = Db::Osoba.new
+      row = osoba.wczytaj(@osobay_list_selected_id);
+
+      # wypelnianie pol formularza
+      @glade.get_widget('input_osobay_imie').text = row['Imie'];
+      @glade.get_widget('input_osobay_nazwisko').text = row['Nazwisko'];
+      @glade.get_widget('input_osobay_adres').text = row['Adres'];
+      @glade.get_widget('input_osobay_nip').text = row['NIP'];
+      @glade.get_widget('input_osobay_pesel').text = row['PESEL'];
+      @glade.get_widget('input_osobay_seria_i_nr_dow_osob').text = row['Seria i numer dowodu'];
+    else
+      # tworzenie komunikatu
+      dialog = Gtk::MessageDialog.new(nil, 
+                                Gtk::Dialog::NO_SEPARATOR,
+                                Gtk::MessageDialog::WARNING,
+                                Gtk::MessageDialog::BUTTONS_OK,
+                                "Nie wybrano rekordu do edycji")
+      dialog.run
+      dialog.signal_connect('response') { dialog.hide }
+    end
   end
   # akcje dla okna add/edit
   # panelu nawigacyjnego
@@ -169,10 +193,13 @@ class Main
 
     model = Gtk::ListStore.new(String, String, String)
     tablica.each_index do |index|
+      arr = tablica[index];
       row = model.insert(index)
-      row.set_value(0,tablica[index]['id_osoby'])
-      row.set_value(1,tablica[index]['Imie'])
-      row.set_value(2,tablica[index]['Nazwisko'])
+      # TODO Dlaczego nie przypisuje id do kolumny id
+      # imienia do imienia etc..
+      row.set_value(0,arr['id_osoby'])
+      row.set_value(1,arr['Imie'])
+      row.set_value(2,arr['Nazwisko'])
     end
 
     @treeview_osoby.set_model(model)
@@ -186,7 +213,7 @@ class Main
     @treeview_osoby.signal_connect("row-activated") do |view, path, column|
        # ustawienie id rekordu ktory zostal klikniety
        # dzieki temu przycisk edytuj umozliwi nam edycje okreslonego rekordu
-       @osobay_list_selected = model.get_value(model.get_iter(path),0)
+       @osobay_list_selected_id = model.get_value(model.get_iter(path),0)
     end
 
     # tworzenie kolumny
@@ -195,6 +222,9 @@ class Main
     @treeview_osoby.insert_column(2, "Nazwisko", Gtk::CellRendererText.new,{:text => 1})
   end
   def on_button_osoby_dodaj_clicked()
+    # TODO sprawdz poprawnosc danych
+    # TODO dodaj
+
     # tworzenie komunikatu
     dialog = Gtk::MessageDialog.new(nil, 
                               Gtk::Dialog::NO_SEPARATOR,
@@ -205,6 +235,14 @@ class Main
     dialog.signal_connect('response') { dialog.hide }
   end
   def on_button_osoby_zapisz_clicked()
+    # sprawdz czy rekord zaladowany
+    if @osobay_list_selected_id == nil 
+      
+    end
+    
+    # TODO sprawdz poprawnosc danych
+    # TODO zedytuj
+
     # tworzenie komunikatu
     dialog = Gtk::MessageDialog.new(nil, 
                               Gtk::Dialog::NO_SEPARATOR,
