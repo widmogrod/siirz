@@ -375,8 +375,9 @@ class Main
     @treeview_osoby.insert_column(7, "nr rzezni", Gtk::CellRendererText.new,{:text => 7})
     @treeview_osoby.insert_column(8, "masa", Gtk::CellRendererText.new,{:text => 8})
   end
-  def on_button_ubojnia_activate()
+  def on_button_ubojnia_clicked()
     # ﻿ta funkcja będzie dostępna w następnej wersji systemy, prosimy o cierpliwość
+    on_menuitem_uboj_activate()
   end
   
 
@@ -505,7 +506,8 @@ class Main
     @treeview_osoby.signal_connect("row-activated") do |view, path, column|
        # ustawienie id rekordu ktory zostal klikniety
        # dzieki temu przycisk edytuj umozliwi nam edycje okreslonego rekordu
-       @osobay_list_selected_id = model.get_value(model.get_iter(path),0)
+       puts @osobay_list_selected_id = model.get_value(model.get_iter(path),0)
+       on_button_osoba_edytuj_clicked
     end
 
    
