@@ -169,12 +169,10 @@ class Main
 
     model = Gtk::ListStore.new(String, String, String)
     tablica.each_index do |index|
-      puts index
-      iter = model.insert(index)
-      iter.set_value(0,tablica[index]['id_osoby'])
-      iter.set_value(1,tablica[index]['Imie'])
-      iter.set_value(2,tablica[index]['Nazwisko'])
-      puts index
+      row = model.insert(index)
+      row.set_value(0,tablica[index]['id_osoby'])
+      row.set_value(1,tablica[index]['Imie'])
+      row.set_value(2,tablica[index]['Nazwisko'])
     end
 
     @treeview_osoby.set_model(model)
