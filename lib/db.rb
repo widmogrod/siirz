@@ -39,7 +39,8 @@ module Db
       begin
         sprawdzDane(dane)
         
-        #w sqlite wymagane jest puste pole klucza
+        # w sqlite wymagane jest puste pole klucza
+        # jezeli go nie ma jest dodawane
         if dane.index(@id) == nil
           dane[@id] = nil
         end
