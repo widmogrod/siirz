@@ -121,11 +121,13 @@ module Db
 
         array = Array.new
         stmt.execute do |results|
-          hash = Hash.new
-          i = 0
           results.each do |row|
+            hash = Hash.new
+            i = 0
             # kazdemu rekordowi przypisuje kolumna => wartosc
-            row.each { |item| hash[results.columns[i]] = item; i = i+1 }
+            row.each do |item|
+              hash[results.columns[i]] = item; i = i+1
+            end
             # dodajemy do tablicy
             array.push(hash)
           end
@@ -152,7 +154,7 @@ module Db
   class Osoba < Db::Record
     def init
       @id = 'id_osoby'
-      @tabela = 'kategoria_bydla'
+      @tabela = 'osoba'
       @kolumny = ['id_osoby', 'Imie', 'Nazwisko', 'Adres', 'NIP', 'PESEL', 'Seria i numer dowodu', 'Wazne']
     end
   end
