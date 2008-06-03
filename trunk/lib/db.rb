@@ -38,9 +38,15 @@ module Db
     def dodaj(dane)
       begin
         sprawdzDane(dane)
+        
+        #w sqlite wymagane jest puste pole klucza
+        if dane.index(@id) == nil
+          dane[@id] = nil
+        end
 
         puts sql = "INSERT INTO `#{@tabela}` (`#{dane.keys.join('`, `')}`) VALUES('#{dane.values.join("', '")}')"
 
+        
         stmt = @@connection.prepare(sql)
         stmt.execute
         return true
