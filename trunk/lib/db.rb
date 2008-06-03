@@ -159,5 +159,81 @@ module Db
     end
   end
 
+
+  class Faktura < Db::Record
+	def init
+		  @id = 'identyfikator'
+		  @tabela = 'faktura'
+		  @kolumny = [  "identyfikator",  "Osoba_id_osoby",  "id_faktury",  "Wartosc netto" , "Wartosc brutto",  "Cena za kg",   "Podatek" ,  "Data zakupu" , "Data zaplaty" ,  "Zaplacono" , 
+  "id_zwierzecia" , "Wazne"  ]
+	end
+  end
+
+  class Kategoria_bydla < Db::Record
+	  def init
+		@id = 'id_kategorii'
+		@tabela = 'kategoria_bydla'
+		@kolumny = ['Nazwa', 'Wazne' ]
+	  end
+  end
+
+
+  class Uboj < Db::Record
+	  def init
+		@id = 'id_uboju'
+		@tabela = 'uboj'
+		@kolumny = [    'Ubojnia_id_ubojni' ,  'Data' , 'Nr_zezni' , 'Nr_Weterynaryjny' , 'Data_wydania_decyzji_wet' , 'Szczegoly' ,  'Wazne' ]
+	  end
+  end
+
+  class Zakup < Db::Record
+	  def init
+		@id = 'identyfikator'
+		@tabela = 'zakup'
+		@kolumny = [   'Faktura_identyfikator' ,  'Zwirze_id_zwierzecia' ,  'id_zakupu',   'Wazne']
+	  end
+  end
+
+  class Zwierze < Db::Record
+	  def init
+		@id = 'id_zwierzecia'
+		@tabela = 'zwierze'
+		@kolumny = [    'Uboj_id_uboju',  'Plik_id_pliku',  'Rasa_id_rasy',   'Kategoria_bydla_id_kategorii',  'Przedzial_wiekowy_id_przedzialu',  'Identyfikator',   "Numer parti uboju",  "Data przyjecia do rzezni", "Data urodzenia",  "Numer stada",  "Numer Rzeni",  "Masa Ciala",  'Podpis', 'Wazne']
+	  end
+  end
+
+  class Ubojnia < Db::Record
+	  def init
+		@id = 'id_ubojni'
+		@tabela = 'ubojnia'
+		@kolumny = [   'Nazwa',  'PESEL',  'REGON',  'Adres',   'Inne',   'Wazne']
+	  end
+  end
+
+  class Rasa  < Db::Record
+	  def init
+		@id = 'id_rasy'
+		@tabela = 'rasa'
+		@kolumny = [   'Nazwa', 'Wazne']
+	  end
+  end
+
+  class Przedzial_wiekowy  < Db::Record
+	  def init
+		@id = 'id_przedzialu'
+		@tabela = 'przedzial_wiekowy'
+		@kolumny = [   'Opis', 'Wazne']
+	  end
+  end
+
+
+  class Plik  < Db::Record
+	  def init
+		@id = 'id_pliku'
+		@tabela = 'plik'
+		@kolumny = [    'Ubojnia_id_ubojni',  'Nazwa',  "Data utworzenia",   'Zakonczony',  'Weksportowany',  'Inne', 'Wazne']
+	  end
+  end
+
 end
   
