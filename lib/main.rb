@@ -174,8 +174,8 @@ class Main
 
     @treeview_osoby.set_model(model)
     # tworzenie kolumny
-    @treeview_osoby.insert_column(0, "Imie", Gtk::CellRendererText.new, { :text => 0, :background => 1 })
-    @treeview_osoby.insert_column(1, "Nazwisko", Gtk::CellRendererText.new, { :text => 0, :background => 1 })
+    @treeview_osoby.insert_column(0, "Imie", Gtk::CellRendererText.new, { :text => 1, :background => 0 })
+    @treeview_osoby.insert_column(1, "Nazwisko", Gtk::CellRendererText.new, { :text => 1, :background => 0 })
   end
   def on_button_osoby_dodaj_clicked()
     # tworzenie komunikatu
