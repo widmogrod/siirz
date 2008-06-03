@@ -15,6 +15,9 @@ class Main
     # Nawiazanie polaczenia z BD
     @polaczenie = SQLite3::Database.new("database.sqlite")
     Db::Record.polaczenie(@polaczenie);
+    #sql = "INSERT INTO `Osoba` (`Adres`, `Imie`, `Seria`, `Nazwisko`, `PESEL`, `NIP`) VALUES('31-314 Krakow ul. Wyzwolenia nr: 132', 'Anna', '', 'Mazur', '48150815355', '577-193-63-66')";
+    #stmt = @polaczenie.prepare(sql)
+    #stmt.execute
 
     # Okna..
     @main_window = @glade.get_widget('main_window');
