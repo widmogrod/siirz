@@ -553,6 +553,7 @@ class Main
       # TODO Maly problem z baza danych tj. pradwopodobnie nazwy kolumn sa be!
       row = Db::Osoba.new
       if row.dodaj(dane);
+        @osobay_list_selected_id = nil
         message = "Osoba została dodana";
       else
         message = "Osoba nie zostala dodana";
@@ -571,7 +572,14 @@ class Main
   def on_button_osoby_zapisz_clicked()
     # sprawdz czy rekord zaladowany
     if @osobay_list_selected_id == nil 
-      
+      dialog = Gtk::MessageDialog.new(nil, 
+                                Gtk::Dialog::DESTROY_WITH_PARENT,
+                                Gtk::MessageDialog::WARNIG,
+                                Gtk::MessageDialog::BUTTONS_OK,
+                                "Nie został zaznaczony rekord do edycji")
+      dialog.run
+      dialog.signal_connect('response') { dialog.hide }
+      return;
     end
     
     imie      = @glade.get_widget('input_osobay_imie').text
@@ -609,6 +617,39 @@ class Main
       end
     end
 
+    # tworzenie komunikatu
+    dialog = Gtk::MessageDialog.new(nil, 
+                              Gtk::Dialog::NO_SEPARATOR,
+                              Gtk::MessageDialog::INFO,
+                              Gtk::MessageDialog::BUTTONS_OK,
+                              message)
+    dialog.run
+    dialog.signal_connect('response') { dialog.hide }
+  end
+  def on_toolbutton_osoba_usun_clicked
+    on_toolbutton_osoba_delate_clicked
+  end
+  def on_toolbutton_osoba_delate_clicked
+    # sprawdz czy rekord zaladowany
+    if @osobay_list_selected_id == nil 
+      dialog = Gtk::MessageDialog.new(nil, 
+                                Gtk::Dialog::DESTROY_WITH_PARENT,
+                                Gtk::MessageDialog::WARNIG,
+                                Gtk::MessageDialog::BUTTONS_OK,
+                                "Nie został zaznaczony rekord do edycji")
+      dialog.run
+      dialog.signal_connect('response') { dialog.hide }
+      return;
+    end
+    
+    osoba = Db::Osoba.new
+    if osoba.usun(@osobay_list_selected_id)
+      @osobay_list_selected_id = nil
+      message = "Osoba została usunieta";
+    else
+      message = "Osoba nie została usunięta";
+    end
+    
     # tworzenie komunikatu
     dialog = Gtk::MessageDialog.new(nil, 
                               Gtk::Dialog::NO_SEPARATOR,
