@@ -143,7 +143,7 @@ module Db
 
     def sprawdzDane(dane)
       dane.each_pair do |key, value|
-        if @kolumny.rindex(key) === nil
+        if @kolumny.index(key) === nil
           raise Exception.new("W tabeli #{@tabela} nie zostala zdefiniowana klumna #{index}");
         end
       end
@@ -155,7 +155,7 @@ module Db
     def init
       @id = 'id_osoby'
       @tabela = 'osoba'
-      @kolumny = ['id_osoby', 'Imie', 'Nazwisko', 'Adres', 'NIP', 'PESEL', 'Seria i numer dowodu', 'Wazne']
+      @kolumny = ['id_osoby', 'Imie', 'Nazwisko', 'Adres', 'NIP', 'PESEL', 'Seria', 'Wazne']
     end
   end
 
