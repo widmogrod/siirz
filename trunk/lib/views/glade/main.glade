@@ -2023,7 +2023,7 @@ dowodu osobistego</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkEntry" id="input_imie">
+                  <widget class="GtkEntry" id="input_osobay_imie">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
@@ -2034,7 +2034,7 @@ dowodu osobistego</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkEntry" id="input_nazwisko">
+                  <widget class="GtkEntry" id="input_osobay_nazwisko">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
@@ -2047,7 +2047,7 @@ dowodu osobistego</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkEntry" id="input_adres">
+                  <widget class="GtkEntry" id="input_osobay_adres">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
@@ -2060,7 +2060,7 @@ dowodu osobistego</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkEntry" id="input_pesel">
+                  <widget class="GtkEntry" id="input_osobay_pesel">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
@@ -2073,7 +2073,7 @@ dowodu osobistego</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkEntry" id="input_seria_i_nr_dow_osob">
+                  <widget class="GtkEntry" id="input_osobay_seria_i_nr_dow_osob">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
@@ -2086,7 +2086,7 @@ dowodu osobistego</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkEntry" id="input_nip">
+                  <widget class="GtkEntry" id="input_osobay_nip">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
