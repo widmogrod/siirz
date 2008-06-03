@@ -35,6 +35,10 @@ class Main
   #
   # Main
   #
+  
+  def on_list_window_destroy
+    @list_window.hide
+  end
 
   # akcje dla menu
   def on_menuitem_uboj_activate()
@@ -56,7 +60,36 @@ class Main
     @osoby_window.show
   end
   def on_button_faktura_clicked
-    
+    @osoby_list_window.show
+    rasy = Db::Faktura.new
+    tablica = rasy.wczytajWszystkie();
+
+    model = Gtk::ListStore.new(String, String, String, String, String, String, String)
+    tablica.each_index do |index|
+      arr = tablica[index];
+      row = model.insert(index)
+ 
+      row.set_value(0,arr['identyfikator'])
+      row.set_value(1,arr['Wartosc netto'])
+    row.set_value(2,arr['Cena za kg'])
+       row.set_value(3,arr['Podatek'])
+        row.set_value(4,arr['Data zakupu'])
+             row.set_value(5,arr['Data zaplaty'])
+                  row.set_value(6,arr['Zaplacono'])
+    end
+
+    @treeview_osoby.set_model(model)
+     @treeview_osoby.signal_connect("row-activated") do |view, path, column|
+    @osobay_list_selected_id = model.get_value(model.get_iter(path),0)
+    end
+
+    @treeview_osoby.insert_column(0, "Identyfikator", Gtk::CellRendererText.new,{:text => 0 })
+    @treeview_osoby.insert_column(1, "Wartosc netto", Gtk::CellRendererText.new,{:text => 1})  
+     @treeview_osoby.insert_column(2, "Cena za kg", Gtk::CellRendererText.new,{:text => 2 })
+    @treeview_osoby.insert_column(3, "Data zakupu", Gtk::CellRendererText.new,{:text => 3})  
+     @treeview_osoby.insert_column(4, "Data zakupu", Gtk::CellRendererText.new,{:text => 4 })
+         @treeview_osoby.insert_column(5, "Data zaplaty", Gtk::CellRendererText.new,{:text => 5})  
+     @treeview_osoby.insert_column(6, "Zaplacono", Gtk::CellRendererText.new,{:text => 6 })
   end
   def on_button_plik_clicked
     
@@ -80,16 +113,128 @@ class Main
     
   end
   def on_button_przedzial_wiekowy_clicked()
+    @osoby_list_window.show
+   przedzial = Db::Przedzial_wiekowy.new
+    tablica = przedzial.wczytajWszystkie();
+
+    model = Gtk::ListStore.new(String, String)
+    tablica.each_index do |index|
+      arr = tablica[index];
+      row = model.insert(index)
+      # TODO Dlaczego nie przypisuje id do kolumny id
+      # imienia do imienia etc..
+      row.set_value(0,arr['id_przedzialu'])
+      row.set_value(1,arr['Opis'])
+    end
+
+    @treeview_osoby.set_model(model)
     
+#    row-activated: self, path, column
+#
+#        * self: the Gtk::TreeView
+#        * path: the Gtk::TreePath
+#        * column: the Gtk::TreeViewColumn
+    # uchwyt dla kliknietego wiersza
+    @treeview_osoby.signal_connect("row-activated") do |view, path, column|
+       # ustawienie id rekordu ktory zostal klikniety
+       # dzieki temu przycisk edytuj umozliwi nam edycje okreslonego rekordu
+       @osobay_list_selected_id = model.get_value(model.get_iter(path),0)
+    end
+
+    # tworzenie kolumny
+    @treeview_osoby.insert_column(0, "Id", Gtk::CellRendererText.new,{:text => 1})
+    @treeview_osoby.insert_column(1, "Opis", Gtk::CellRendererText.new,{:text => 1})
+
   end
   def on_button_rasy_clicked()
-    
+     @osoby_list_window.show
+   rasy = Db::Rasa.new
+    tablica = rasy.wczytajWszystkie();
+
+    model = Gtk::ListStore.new(String, String)
+    tablica.each_index do |index|
+      arr = tablica[index];
+      row = model.insert(index)
+ 
+      row.set_value(0,arr['id_rasy'])
+      row.set_value(1,arr['Nazwa'])
+    end
+
+    @treeview_osoby.set_model(model)
+     @treeview_osoby.signal_connect("row-activated") do |view, path, column|
+    @osobay_list_selected_id = model.get_value(model.get_iter(path),0)
+    end
+
+    @treeview_osoby.insert_column(0, "Id", Gtk::CellRendererText.new,{:text => 0 })
+    @treeview_osoby.insert_column(1, "Nazwa", Gtk::CellRendererText.new,{:text => 1})
+  end
+  def on_button_kategorie_bydla_clicked()
+   @osoby_list_window.show
+    osoba = Db::Kategoria_bydla.new
+    tablica = osoba.wczytajWszystkie();
+
+    model = Gtk::ListStore.new(String, String, String)
+    tablica.each_index do |index|
+      arr = tablica[index];
+      row = model.insert(index)
+
+      row.set_value(0,arr['id_kategorii'])
+      row.set_value(1,arr['Nazwa'])
+   
+    end
+
+    @treeview_osoby.set_model(model)
+
+    @treeview_osoby.signal_connect("row-activated") do |view, path, column|
+
+       @osobay_list_selected_id = model.get_value(model.get_iter(path),0)
+    end
+
+    @treeview_osoby.insert_column(0, "Id", Gtk::CellRendererText.new,{:text => 0})
+    @treeview_osoby.insert_column(1, "Nazwa", Gtk::CellRendererText.new,{:text => 1})
   end
   def on_button_kategorie_bydla_clicked()
     
   end
   def on_button_zwierzeta_clicked()
-    
+     #	@kolumny = [  'id_zwierzecia',   'Uboj_id_uboju',  'Plik_id_pliku',  'Rasa_id_rasy',   'Kategoria_bydla_id_kategorii',  'Przedzial_wiekowy_id_przedzialu',  'Identyfikator',   "Numer parti uboju",  "Data przyjecia do rzezni", "Data urodzenia",  "Numer stada",  "Numer Rzeni",  "Masa Ciala",  'Podpis', 'Wazne']
+   @osoby_list_window.show
+    osoba = Db::Zwierze.new
+    tablica = osoba.wczytajWszystkie();
+
+    model = Gtk::ListStore.new(String, String, String, String, String, String, String, String, String)
+    tablica.each_index do |index|
+      arr = tablica[index];
+      row = model.insert(index)
+
+      row.set_value(0,arr['id_zwierzecia'])
+      row.set_value(1,arr['Przedzial_wiekowy_id_przedzialu'])
+       row.set_value(2,arr['Identyfikator'])
+        row.set_value(3,arr['Numer parti uboju'])
+         row.set_value(4,arr['Data przyjecia do rzezni'])
+           row.set_value(5,arr['Data urodzenia'])
+             row.set_value(6,arr['Numer stada'])
+               row.set_value(7,arr['Numer Rzeni'])
+                row.set_value(8,arr['Masa Ciala'])
+
+    end
+
+    @treeview_osoby.set_model(model)
+
+    @treeview_osoby.signal_connect("row-activated") do |view, path, column|
+
+       @osobay_list_selected_id = model.get_value(model.get_iter(path),0)
+    end
+
+    @treeview_osoby.insert_column(0, "Id", Gtk::CellRendererText.new,{:text => 0})
+    @treeview_osoby.insert_column(1, "przedzial", Gtk::CellRendererText.new,{:text => 1})
+        @treeview_osoby.insert_column(2, "Identyfikator", Gtk::CellRendererText.new,{:text => 2})
+    @treeview_osoby.insert_column(3, "nr. Parti", Gtk::CellRendererText.new,{:text => 3})
+        @treeview_osoby.insert_column(4, "data przyjecia", Gtk::CellRendererText.new,{:text => 4})
+    @treeview_osoby.insert_column(5, "data urodzenia", Gtk::CellRendererText.new,{:text => 5})
+        @treeview_osoby.insert_column(6, "nr stada", Gtk::CellRendererText.new,{:text => 6})
+@treeview_osoby.insert_column(7, "nr rzezni", Gtk::CellRendererText.new,{:text => 7})
+@treeview_osoby.insert_column(8, "masa", Gtk::CellRendererText.new,{:text => 8})
   end
   def on_button_ubojnia_activate()
     # ﻿ta funkcja będzie dostępna w następnej wersji systemy, prosimy o cierpliwość
