@@ -519,9 +519,9 @@ class Main
       @treeview_osoby.remove_column(key);
     end
      # tworzenie kolumny
-    @treeview_osoby.insert_column(0, "Id", Gtk::CellRendererText.new,{:text => 1})
+    @treeview_osoby.insert_column(0, "Id", Gtk::CellRendererText.new,{:text => 0})
     @treeview_osoby.insert_column(1, "Imie", Gtk::CellRendererText.new,{:text => 1})
-    @treeview_osoby.insert_column(2, "Nazwisko", Gtk::CellRendererText.new,{:text => 1})
+    @treeview_osoby.insert_column(2, "Nazwisko", Gtk::CellRendererText.new,{:text => 2})
   end
   def on_button_osoby_dodaj_clicked()
     imie      = @glade.get_widget('input_osobay_imie').text
