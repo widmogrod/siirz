@@ -186,6 +186,7 @@ class Main
   end
   # akcje dla okna add/edit
   # panelu nawigacyjnego
+  # TODO usunac dziwne zachowanie po ponownym otwarciu okna listy lista posiada zduplikowane kolumny
   def on_button_osoby_list_clicked
     @osoby_list_window.show
     osoba = Db::Osoba.new
@@ -222,15 +223,46 @@ class Main
     @treeview_osoby.insert_column(2, "Nazwisko", Gtk::CellRendererText.new,{:text => 1})
   end
   def on_button_osoby_dodaj_clicked()
-    # TODO sprawdz poprawnosc danych
-    # TODO dodaj
+    imie      = @glade.get_widget('input_osobay_imie').text
+    nazwisko  = @glade.get_widget('input_osobay_nazwisko').text
+    adres     = @glade.get_widget('input_osobay_adres').text
+    nip       = @glade.get_widget('input_osobay_nip').text
+    pesel     = @glade.get_widget('input_osobay_pesel').text
+    seria     = @glade.get_widget('input_osobay_seria_i_nr_dow_osob').text
+
+    dane = {
+      'Imie'      => imie,
+      'Nazwisko'  => nazwisko,
+      'Adres'     => adres,
+      'NIP'       => nip,
+      'PESEL'     => pesel,
+      'Seria i numer dowodu'  =>seria
+    }
+    
+    # walidacja - bardzo lajtowa
+    errors = Array.new
+    if imie == '' then     errors.push('Imie musi zostac podane') end
+    if nazwisko == '' then errors.push('Nazwisko musi zostac podane') end
+    if adres == '' then    errors.push('Adres musi zostac podany') end
+    
+    # sa blendy! asta lawista babe!
+    if errors.size > 0 then
+      message = errors.join("\n");
+    else
+      row = Db::Osoba.new
+      if row.dodaj(dane);
+        message = "Osoba została dodana";
+      else
+        message = "Osoba nie zostala doana";
+      end
+    end
 
     # tworzenie komunikatu
     dialog = Gtk::MessageDialog.new(nil, 
                               Gtk::Dialog::NO_SEPARATOR,
                               Gtk::MessageDialog::INFO,
                               Gtk::MessageDialog::BUTTONS_OK,
-                              "Osoba została dodana")
+                              message)
     dialog.run
     dialog.signal_connect('response') { dialog.hide }
   end
