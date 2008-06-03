@@ -172,7 +172,7 @@ class Main
       @glade.get_widget('input_osobay_adres').text = row['Adres'];
       @glade.get_widget('input_osobay_nip').text = row['NIP'];
       @glade.get_widget('input_osobay_pesel').text = row['PESEL'];
-      @glade.get_widget('input_osobay_seria_i_nr_dow_osob').text = row['Seria i numer dowodu'];
+      @glade.get_widget('input_osobay_seria_i_nr_dow_osob').text = row['Seria'];
     else
       # tworzenie komunikatu
       dialog = Gtk::MessageDialog.new(nil, 
@@ -236,7 +236,7 @@ class Main
       'Adres'     => adres,
       'NIP'       => nip,
       'PESEL'     => pesel,
-      'Seria i numer dowodu'  =>seria
+      'Seria'     => seria
     }
     
     # walidacja - bardzo lajtowa
@@ -249,17 +249,18 @@ class Main
     if errors.size > 0 then
       message = errors.join("\n");
     else
+      # TODO Maly problem z baza danych tj. pradwopodobnie nazwy kolumn sa be!
       row = Db::Osoba.new
       if row.dodaj(dane);
         message = "Osoba została dodana";
       else
-        message = "Osoba nie zostala doana";
+        message = "Osoba nie zostala dodana";
       end
     end
 
     # tworzenie komunikatu
     dialog = Gtk::MessageDialog.new(nil, 
-                              Gtk::Dialog::NO_SEPARATOR,
+                              Gtk::Dialog::DESTROY_WITH_PARENT,
                               Gtk::MessageDialog::INFO,
                               Gtk::MessageDialog::BUTTONS_OK,
                               message)
@@ -270,6 +271,41 @@ class Main
     # sprawdz czy rekord zaladowany
     if @osobay_list_selected_id == nil 
       
+    end
+    
+    imie      = @glade.get_widget('input_osobay_imie').text
+    nazwisko  = @glade.get_widget('input_osobay_nazwisko').text
+    adres     = @glade.get_widget('input_osobay_adres').text
+    nip       = @glade.get_widget('input_osobay_nip').text
+    pesel     = @glade.get_widget('input_osobay_pesel').text
+    seria     = @glade.get_widget('input_osobay_seria_i_nr_dow_osob').text
+
+    dane = {
+      'Imie'      => imie,
+      'Nazwisko'  => nazwisko,
+      'Adres'     => adres,
+      'NIP'       => nip,
+      'PESEL'     => pesel,
+      'Seria'     => seria
+    }
+    
+    # walidacja - bardzo lajtowa
+    errors = Array.new
+    if imie == '' then     errors.push('Imie musi zostac podane') end
+    if nazwisko == '' then errors.push('Nazwisko musi zostac podane') end
+    if adres == '' then    errors.push('Adres musi zostac podany') end
+    
+    # sa blendy! asta lawista babe!
+    if errors.size > 0 then
+      message = errors.join("\n");
+    else
+      # TODO Maly problem z baza danych tj. pradwopodobnie nazwy kolumn sa be!
+      row = Db::Osoba.new
+      if row.edytuj(@osobay_list_selected_id, dane);
+        message = "Osoba została zedytowana";
+      else
+        message = "Osoba nie zostala zedytowana";
+      end
     end
     
     # TODO sprawdz poprawnosc danych
