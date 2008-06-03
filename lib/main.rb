@@ -307,16 +307,13 @@ class Main
         message = "Osoba nie zostala zedytowana";
       end
     end
-    
-    # TODO sprawdz poprawnosc danych
-    # TODO zedytuj
 
     # tworzenie komunikatu
     dialog = Gtk::MessageDialog.new(nil, 
                               Gtk::Dialog::NO_SEPARATOR,
                               Gtk::MessageDialog::INFO,
                               Gtk::MessageDialog::BUTTONS_OK,
-                              "Zmiany zostały zapisane")
+                              message)
     dialog.run
     dialog.signal_connect('response') { dialog.hide }
   end
