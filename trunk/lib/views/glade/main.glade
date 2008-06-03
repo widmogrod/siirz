@@ -1792,6 +1792,17 @@ Tomasz Sławek</property>
               </packing>
             </child>
             <child>
+              <widget class="GtkToolButton" id="toolbutton_osoba_usun">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Usuń</property>
+                <property name="stock_id">gtk-delete</property>
+                <signal name="clicked" handler="on_toolbutton_osoba_usun_clicked"/>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
               <widget class="GtkToolButton" id="button_osoby_anuluj">
                 <property name="visible">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
@@ -2009,6 +2020,16 @@ dowodu osobistego</property>
                 <property name="label" translatable="yes">Edytuj zaznaczone</property>
                 <property name="stock_id">gtk-edit</property>
                 <signal name="clicked" handler="on_button_osoba_edytuj_clicked"/>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="toolbutton_osoba_delate">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Usuń</property>
+                <property name="stock_id">gtk-delete</property>
               </widget>
               <packing>
                 <property name="expand">False</property>
